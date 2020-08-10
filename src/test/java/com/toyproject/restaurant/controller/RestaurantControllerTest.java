@@ -21,8 +21,16 @@ class RestaurantControllerTest {
     private MockMvc mvc;
 
     @Test
-    public void list() throws Exception{
+    public void list() throws Exception {
         mvc.perform(get("/restaurants"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"id\":1007")))
+                .andExpect(content().string(containsString("\"name\":\"Bob zip\"")));
+    }
+
+    @Test
+    public void detail() throws Exception{
+        mvc.perform(get("/restaurants/1007"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"id\":1007")))
                 .andExpect(content().string(containsString("\"name\":\"Bob zip\"")));
