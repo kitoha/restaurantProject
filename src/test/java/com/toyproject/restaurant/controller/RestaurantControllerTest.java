@@ -1,5 +1,7 @@
 package com.toyproject.restaurant.controller;
 
+import com.toyproject.restaurant.application.RestaurantService;
+import com.toyproject.restaurant.domain.MenuItemRepositoryImpl;
 import com.toyproject.restaurant.domain.RestaurantRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,8 +23,14 @@ class RestaurantControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @SpyBean(RestaurantService.class)
+    private RestaurantService restaurantService;
+
     @SpyBean(RestaurantRepositoryImpl.class)
     private RestaurantRepositoryImpl restaurantRepository;
+
+    @SpyBean(MenuItemRepositoryImpl.class)
+    private MenuItemRepositoryImpl menuItemRepository;
 
     @Test
     public void list() throws Exception {
@@ -37,9 +45,8 @@ class RestaurantControllerTest {
         mvc.perform(get("/restaurants/1007"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"id\":1007")))
-                .andExpect(content().string(containsString("\"name\":\"Bob zip\"")));
+                .andExpect(content().string(containsString("\"name\":\"Bob zip\"")))
+                .andExpect(content().string(containsString("Kimchi")));
     }
-
-
 
 }
